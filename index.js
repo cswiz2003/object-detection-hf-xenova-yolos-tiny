@@ -14,6 +14,11 @@ const inputImageContainer = document.getElementById('inputImageContainer');
 const outputImageContainer = document.getElementById('outputImageContainer');
 const result = document.getElementById('result');
 
+// Disable all buttons initially
+sampleImageButton.disabled = true
+uploadImageButton.disabled = true
+detectObjectsButton.disabled = true
+
 // Clear any existing boxes
 function clearDetections() {
     const boxes = imageContainer.querySelectorAll('.bounding-box')
@@ -38,6 +43,12 @@ const detector = await pipeline('object-detection', 'Xenova/yolos-tiny', {
             updateProgress(90, 'Almost ready...')
         }
     }
+}).then(model => {
+    // Enable sample and upload buttons after model is loaded
+    sampleImageButton.disabled = false
+    uploadImageButton.disabled = false
+    updateProgress(100, 'Model loaded! Choose an image to begin.')
+    return model
 })
 
 // Handle sample image button
@@ -70,7 +81,9 @@ imageInput.addEventListener('change', (event) => {
 
 // Enable Object Detection
 detectObjectsButton.addEventListener('click', async () => {
-    // Disable button and update status
+    // Disable all buttons during detection
+    sampleImageButton.disabled = true
+    uploadImageButton.disabled = true
     detectObjectsButton.disabled = true
     clearDetections()
     
@@ -103,13 +116,12 @@ detectObjectsButton.addEventListener('click', async () => {
         console.error('Detection error:', error)
         updateProgress(0, 'Error during detection. Please try again.')
     } finally {
+        // Re-enable buttons after detection
+        sampleImageButton.disabled = false
+        uploadImageButton.disabled = false
         detectObjectsButton.disabled = false
     }
 })
-
-// Initial state
-updateProgress(100, 'Ready! Click "Detect Objects" to begin')
-detectObjectsButton.disabled = false
 
 // Helper function that draws boxes for every detected object in the image
 function drawObjectBox(detectedObject) {
