@@ -6,27 +6,158 @@
     <link rel="stylesheet" href="style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Object Detection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #status {
+            text-align: center;
+            color: #666;
+            margin: 20px 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button.sample-image {
+            background-color: #2ecc71;
+        }
+
+        button.sample-image:hover {
+            background-color: #27ae60;
+        }
+
+        button.upload-image {
+            background-color: #e74c3c;
+        }
+
+        button.upload-image:hover {
+            background-color: #c0392b;
+        }
+
+        #imageInput {
+            display: none;
+        }
+
+        .image-container {
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 10px;
+            background-color: #3498db;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+    </style>
 </head>
 
 <body>
-    <main class="container">
+    <div class="container">
         <h1>AI Object Detection</h1>
-        <div class="card">
-            <div class="progress-section">
-                <div class="progress-container">
-                    <div class="progress-bar" id="progress-bar"></div>
-                </div>
-                <p id="status" class="status-text">Initializing...</p>
-            </div>
-            
-            <button id="detect-objects" disabled>Detect Objects</button> 
-            
-            <div id="image-container" class="image-container">
-                <img id="image" src="meeting.jpg" alt="Input image for object detection"/>
-            </div>
+        <div id="status">Initializing...</div>
+        
+        <div class="button-group">
+            <button class="sample-image" onclick="useDefaultImage()" id="defaultImageBtn">
+                <span>Try with Sample Image</span>
+            </button>
+            <button class="upload-image" onclick="document.getElementById('imageInput').click()" id="uploadBtn">
+                <span>Upload Your Image</span>
+            </button>
+            <button onclick="detectObjects()" id="detectBtn" disabled>
+                <span>Detect Objects</span>
+            </button>
         </div>
-    </main>
-    <script src="./index.js" type="module"></script>
+
+        <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(event)">
+        
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="image-container">
+            <div id="inputImageContainer"></div>
+            <div id="outputImageContainer"></div>
+        </div>
+
+        <div id="result"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers"></script>
+    <script src="index.js"></script>
 </body>
 
 </html>

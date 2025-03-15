@@ -1,11 +1,22 @@
 import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.8.0'
 
+// Import the required modules from transformers.js
+let isModelLoaded = false;
+const defaultImagePath = 'meeting.jpg';
+
 // Reference the HTML elements that we will need
 const status = document.getElementById('status')
 const image = document.getElementById('image')
 const detectObjectsButton = document.getElementById('detect-objects')
 const imageContainer = document.getElementById('image-container')
 const progressBar = document.getElementById('progress-bar')
+const detectBtn = document.getElementById('detectBtn');
+const defaultImageBtn = document.getElementById('defaultImageBtn');
+const uploadBtn = document.getElementById('uploadBtn');
+const progressContainer = document.getElementById('progressContainer');
+const inputImageContainer = document.getElementById('inputImageContainer');
+const outputImageContainer = document.getElementById('outputImageContainer');
+const result = document.getElementById('result');
 
 // Clear any existing boxes
 function clearDetections() {
@@ -19,19 +30,64 @@ function updateProgress(percent, message) {
     status.textContent = message
 }
 
-// Create a new object detection pipeline
-updateProgress(0, 'Loading AI model (approx. 20MB)...')
-
-const detector = await pipeline('object-detection', 'Xenova/yolos-tiny', {
-    progress_callback: (progress) => {
-        if (progress.status === 'downloading') {
-            const percent = Math.round(progress.progress * 100)
-            updateProgress(percent, `Downloading model: ${percent}% (approx. 20MB)`)
-        } else if (progress.status === 'loading') {
-            updateProgress(90, 'Almost ready...')
-        }
+// Initialize the model
+async function initializeModel() {
+    try {
+        isModelLoaded = true;
+        status.textContent = 'Model loaded! Choose an image to begin.';
+        defaultImageBtn.disabled = false;
+        uploadBtn.disabled = false;
+    } catch (error) {
+        status.textContent = 'Error loading model. Please refresh the page.';
+        console.error('Error loading model:', error);
     }
-})
+}
+
+// Handle default image
+async function useDefaultImage() {
+    const img = document.createElement('img');
+    img.src = defaultImagePath;
+    img.alt = 'Default sample image';
+    
+    // Clear previous images and results
+    clearDisplay();
+    
+    // Display the input image
+    inputImageContainer.appendChild(img);
+    status.textContent = 'Sample image loaded! Click "Detect Objects" to begin detection.';
+    detectBtn.disabled = false;
+}
+
+// Handle image upload
+function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.alt = 'Uploaded image';
+            
+            // Clear previous images and results
+            clearDisplay();
+            
+            // Display the input image
+            inputImageContainer.appendChild(img);
+            status.textContent = 'Image uploaded! Click "Detect Objects" to begin detection.';
+            detectBtn.disabled = false;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Clear previous display
+function clearDisplay() {
+    inputImageContainer.innerHTML = '';
+    outputImageContainer.innerHTML = '';
+    result.innerHTML = '';
+    progressContainer.style.display = 'none';
+    progressBar.style.width = '0%';
+}
 
 // Enable Object Detection
 detectObjectsButton.addEventListener('click', async () => {
@@ -44,7 +100,7 @@ detectObjectsButton.addEventListener('click', async () => {
         updateProgress(30, 'Analyzing image...')
         
         // Detect Objects
-        const detectedObjects = await detector(image.src, {
+        const detectedObjects = await pipeline(image.src, {
             threshold: 0.95,
             percentage: true
         });
@@ -104,3 +160,6 @@ function drawObjectBox(detectedObject) {
     boxElement.appendChild(labelElement)
     imageContainer.appendChild(boxElement)
 }
+
+// Initialize the model when the page loads
+initializeModel();
