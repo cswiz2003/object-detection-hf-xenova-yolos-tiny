@@ -2,14 +2,15 @@
   "name": "detection",
   "version": "1.0.0",
   "main": "index.js",
+  "homepage": "https://cswiz2003.github.io/object-detection-hf-xenova-yolos-tiny",
   "scripts": {
-    "start": "http-server --cors -c-1",
+    "start": "http-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "AI Object Detection with YOLO & Transformers.js",
   "devDependencies": {
     "http-server": "^14.1.1"
   }
