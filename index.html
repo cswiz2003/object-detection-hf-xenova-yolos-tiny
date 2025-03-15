@@ -5,15 +5,25 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Transformers.js - Object Detection demo</title>
+    <title>AI Object Detection</title>
 </head>
 
 <body>
     <main class="container">
-        <p id="status"></p> 
-        <button id="detect-objects" disabled>Detect Objects</button> 
-        <div id="image-container">
-            <img id="image" src="meeting.jpg"/>
+        <h1>AI Object Detection</h1>
+        <div class="card">
+            <div class="progress-section">
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <p id="status" class="status-text">Initializing...</p>
+            </div>
+            
+            <button id="detect-objects" disabled>Detect Objects</button> 
+            
+            <div id="image-container" class="image-container">
+                <img id="image" src="meeting.jpg" alt="Input image for object detection"/>
+            </div>
         </div>
     </main>
     <script src="./index.js" type="module"></script>

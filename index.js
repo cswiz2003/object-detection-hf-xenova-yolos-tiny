@@ -5,42 +5,78 @@ const status = document.getElementById('status')
 const image = document.getElementById('image')
 const detectObjectsButton = document.getElementById('detect-objects')
 const imageContainer = document.getElementById('image-container')
+const progressBar = document.getElementById('progress-bar')
 
-// Create a new object detection pipeline
-status.textContent = 'Loading model...'
-const detector = await pipeline('object-detection', 'facebook/detr-resnet-50')
-
-// Enable Object Detection
-detectObjectsButton.addEventListener('click', detectAndDrawObjects)
-detectObjectsButton.disabled = false
-status.textContent = 'Ready'
-
-/* ⛳️ CHALLENGE 
-
-Complete this function with the following requirements:
-
-1. The AI Model must be 95% sure of the detected object
-2. The box coordinates must be compatible with the drawObjectBox helper function
-*/
-async function detectAndDrawObjects() {
-    // Detect Objects
-    status.textContent = 'Detecting...'
-    const detectedObjects = await detector(image.src, {
-        threshold: 0.95,
-        percentage: true
-    });
-    
-    // Draw Detected Objects
-    status.textContent = 'Drawing...'
-    detectedObjects.forEach(obj => {
-        drawObjectBox(obj)
-    })
-    
-    status.textContent = 'Done!'
+// Clear any existing boxes
+function clearDetections() {
+    const boxes = imageContainer.querySelectorAll('.bounding-box')
+    boxes.forEach(box => box.remove())
 }
 
+// Update progress and status
+function updateProgress(percent, message) {
+    progressBar.style.width = `${percent}%`
+    status.textContent = message
+}
+
+// Create a new object detection pipeline
+updateProgress(0, 'Loading AI model (approx. 20MB)...')
+
+const detector = await pipeline('object-detection', 'Xenova/yolos-tiny', {
+    progress_callback: (progress) => {
+        if (progress.status === 'downloading') {
+            const percent = Math.round(progress.progress * 100)
+            updateProgress(percent, `Downloading model: ${percent}% (approx. 20MB)`)
+        } else if (progress.status === 'loading') {
+            updateProgress(90, 'Almost ready...')
+        }
+    }
+})
+
+// Enable Object Detection
+detectObjectsButton.addEventListener('click', async () => {
+    // Disable button and update status
+    detectObjectsButton.disabled = true
+    clearDetections()
+    
+    try {
+        // Update progress for detection
+        updateProgress(30, 'Analyzing image...')
+        
+        // Detect Objects
+        const detectedObjects = await detector(image.src, {
+            threshold: 0.95,
+            percentage: true
+        });
+        
+        // Update progress for drawing
+        updateProgress(60, 'Processing results...')
+        
+        // Draw Detected Objects
+        detectedObjects.forEach(obj => {
+            drawObjectBox(obj)
+        })
+        
+        // Complete
+        updateProgress(100, `Found ${detectedObjects.length} objects!`)
+        
+        // Reset progress after a delay
+        setTimeout(() => {
+            updateProgress(0, 'Ready for next detection')
+        }, 2000)
+    } catch (error) {
+        console.error('Detection error:', error)
+        updateProgress(0, 'Error during detection. Please try again.')
+    } finally {
+        detectObjectsButton.disabled = false
+    }
+})
+
+// Initial state
+updateProgress(100, 'Ready! Click "Detect Objects" to begin')
+detectObjectsButton.disabled = false
+
 // Helper function that draws boxes for every detected object in the image
-// ⚠️ ️This function requires box coordinates to be in percentages  ️
 function drawObjectBox(detectedObject) {
     const { label, score, box } = detectedObject
     const { xmax, xmin, ymax, ymin } = box

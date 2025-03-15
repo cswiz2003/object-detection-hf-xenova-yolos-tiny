@@ -1,58 +1,59 @@
-# AI Object Detection with DETR & Transformers.js
+# AI Object Detection with YOLO & Transformers.js
 
-A powerful web-based object detection application that uses state-of-the-art AI models to detect and label objects in images. This tool leverages Facebook's DETR (Detection Transformer) model through Transformers.js, providing real-time object detection directly in the browser without requiring a backend server.
+A modern web-based object detection application that uses state-of-the-art AI models to detect and label objects in images. This tool leverages the YOLO (You Only Look Once) tiny model through Transformers.js, providing real-time object detection directly in the browser without requiring a backend server.
 
 ## 🌟 Showcase
 
-### Example Detection
-**Input Image:**
+### Input Image
 ![Input Image](meeting.jpg)
 
-#### Detection Results
-![Detection Results](meeting.jpg)
+### Detection Results
+![Detection Results](detected_objs.jpg)
 
-## ✨ Features
+## 🌟 Features
 
-- **Powerful AI Model:**
-  - Facebook's DETR-ResNet-50 model
-  - High accuracy object detection
-  - Real-time processing in browser
+- **Fast & Efficient:**
+  - Lightweight YOLO-tiny model (~20MB)
+  - Real-time browser-based processing
   - No backend server required
+  - Works offline after initial model download
 
-- **User-Friendly Interface:**
-  - Simple web interface
-  - One-click object detection
-  - Visual bounding boxes
-  - Confidence score display
-  - Color-coded detections
+- **Modern User Interface:**
+  - Clean, minimalist design
+  - Real-time progress tracking
+  - Smooth animations and transitions
+  - Responsive layout
+  - Interactive detection boxes
+  - Color-coded object labels
 
 - **Smart Processing:**
-  - Browser-based processing
-  - Automatic model caching
-  - Optimized performance
   - High confidence threshold (95%)
+  - Automatic model caching
+  - Multiple object detection
+  - Percentage-based coordinates
+  - Clear visual feedback
 
-- **Technical Advantages:**
-  - No server costs
-  - Works offline after initial load
-  - Privacy-focused (processing in browser)
-  - Cross-browser compatibility
+- **Progress Tracking:**
+  - Visual progress bar
+  - Detailed status messages
+  - Download progress indication
+  - Processing state updates
+  - Results summary
 
 ## 🛠️ Technologies Used
 
-- HTML5
-- CSS3
+- HTML5 & CSS3
 - JavaScript (ES6+)
 - Transformers.js
-- DETR-ResNet-50 Model
-- Hugging Face Hosting
+- YOLO-tiny Model
+- Hugging Face Model Hub
 
 ## 🚀 Setup
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/object-detection.git
-cd object-detection
+git clone https://github.com/cswiz2003/object-detection-hf-xenova-yolos-tiny.git
+cd object-detection-hf-xenova-yolos-tiny
 ```
 
 2. Install dependencies:
@@ -73,9 +74,12 @@ http://localhost:8080
 ## 💻 Usage
 
 1. Open the web application in your browser
-2. Wait for the AI model to load (indicated by status message)
+2. Wait for the AI model to load (~20MB download first time)
 3. Click the "Detect Objects" button
-4. View the detected objects with bounding boxes and labels
+4. View the detected objects with:
+   - Bounding boxes
+   - Object labels
+   - Confidence scores
 
 ## 🔧 Technical Requirements
 
@@ -83,6 +87,18 @@ http://localhost:8080
 - JavaScript enabled
 - Minimum 4GB RAM recommended
 - Internet connection for initial model download
+- ~20MB free space for model caching
+
+## 🎨 UI Features
+
+- Gradient progress bar
+- Smooth animations
+- Responsive design
+- Interactive elements
+- Clear status messages
+- Modern card layout
+- Hover effects
+- Shadow effects
 
 ## 🤝 Contributing
 
@@ -95,14 +111,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - [Hugging Face](https://huggingface.co/) for providing the AI models and hosting
-- [Facebook Research](https://ai.facebook.com/research/) for the DETR model
 - [Transformers.js](https://github.com/xenova/transformers.js) for browser-based AI capabilities
+- [YOLO](https://pjreddie.com/darknet/yolo/) for the original object detection algorithm
 
 ## 📧 Contact
 Feel free to reach out:
-- LinkedIn: [Your LinkedIn Profile]
-- GitHub: [Your GitHub Profile]
+- LinkedIn: https://www.linkedin.com/in/shafique7z/
+- GitHub: https://github.com/cswiz2003
 
 ---
 
-<p align="center">Made with ❤️ by [Your Name]</p> 
+<p align="center">Made with ❤️ by Shafique</p> 
