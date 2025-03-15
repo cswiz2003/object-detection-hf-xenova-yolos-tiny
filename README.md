@@ -2,13 +2,17 @@
 
 A modern web-based object detection application that uses state-of-the-art AI models to detect and label objects in images. This tool leverages the YOLO (You Only Look Once) tiny model through Transformers.js, providing real-time object detection directly in the browser without requiring a backend server.
 
+## 🌐 Live Demo
+
+Try out the application here: [Live Demo](https://cswiz2003.github.io/object-detection-hf-xenova-yolos-tiny)
+
 ## 🌟 Showcase
 
 ### Input Image
 ![Input Image](meeting.jpg)
 
 ### Detection Results
-![Detection Results](detected_objs.jpg)
+![Detection Results](detected_objs.png)
 
 ## 🌟 Features
 
